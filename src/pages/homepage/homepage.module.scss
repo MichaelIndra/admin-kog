@@ -1,0 +1,17 @@
+.homepage {
+    padding: 20px;
+}
+
+.title {
+    font-size: 2rem;
+    text-align: left;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+.cardContainer {
+    display: flex;
+    flex-direction: column;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+}

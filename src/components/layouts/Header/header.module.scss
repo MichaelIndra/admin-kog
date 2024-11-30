@@ -1,0 +1,18 @@
+.header {
+    width: 100%;
+    height: 100px;
+    /* Tinggi header */
+    background-color: white ;
+    color: #000; /* Warna teks header */
+    display: flex;
+    align-items: center; /* Tengah secara vertikal */
+     /* Header tetap di atas */
+    justify-content: flex-end;
+    padding: 10px 20px;
+    z-index: 1000;
+  }
+  .rightContent {
+    display: flex;
+    align-items: center;
+    gap: 10px; /* Jarak antar elemen di sisi kanan */
+  }  

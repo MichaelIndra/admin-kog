@@ -1,0 +1,70 @@
+.sidebar {
+  width: 250px;
+  background-color: #fff;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 20px; /* Jarak antara logo dan menu */
+}
+
+.logoImage {
+  width: 64px; /* Atur ukuran logo */
+  height: auto;
+  margin-right: 10px;
+}
+
+.logoText {
+  font-size: 0.75rem; /* Ukuran teks */
+  font-weight: bold;
+  color: #333;
+}
+
+.sidebar nav ul {
+  list-style: none;
+  padding: 0;
+}
+
+.sidebar nav ul li {
+  margin: 10px 0;
+}
+
+.sidebar nav ul li a {
+  display: flex; /* Flexbox untuk ikon dan teks */
+  align-items: center; /* Ikon dan teks sejajar secara vertikal */
+  color: #000; /* Warna teks default */
+  text-decoration: none;
+  gap: 10px; /* Jarak antara ikon dan teks */
+  transition: color 0.3s, filter 0.3s; /* Efek transisi */
+}
+
+.sidebar nav ul li a:hover {
+  text-decoration: underline;
+}
+
+.activeLink {
+  color: red; /* Warna merah jika terpilih */
+  font-weight: bold;
+}
+
+.inactiveLink {
+  color: #000; /* Warna default */
+}
+
+/* Gaya untuk ikon */
+.icon {
+  width: 20px;
+  height: 20px;
+  filter: grayscale(100%) brightness(0) invert(0); /* Warna hitam default */
+  transition: filter 0.3s;
+}
+
+.activeLink .icon {
+  filter: grayscale(0%) brightness(1) invert(0.5); /* Warna merah untuk aktif */
+}
