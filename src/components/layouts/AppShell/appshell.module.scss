@@ -20,6 +20,8 @@
   .mainContent {
     background-color: #f4f4f4; /* Warna latar konten utama */
     padding: 20px;
-    overflow: auto; /* Scroll jika konten meluap */
+    flex:1;
+    position: relative;
+    overflow: hidden; /* Scroll jika konten meluap */
   }
   

@@ -9,8 +9,13 @@ type AppShellProps = {
 
 const AppShell = (props: AppShellProps) => {
     const { children } = props
-
-    return (
+    const disableNavbar = ["/auth/login", "/auth/register", "/404"]
+    const { pathname } = useRouter();
+    const isNoLayout = disableNavbar.includes(pathname);
+    return isNoLayout ? (
+      <div>{children}</div> 
+    
+    ) : (
         <div className={styles.layout}>
           <Header />
           <div className={styles.body}>

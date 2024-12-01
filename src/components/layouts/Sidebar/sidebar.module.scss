@@ -26,13 +26,19 @@
   color: #333;
 }
 
+.nav {
+  flex-grow: 1; /* Isi ruang di antara logo dan tombol Logout */
+}
+
+
 .sidebar nav ul {
   list-style: none;
   padding: 0;
 }
 
 .sidebar nav ul li {
-  margin: 10px 0;
+  margin: 10px 0; /* Jarak vertikal antar item */
+  padding: 10px; /* Padding dalam setiap item */
 }
 
 .sidebar nav ul li a {
@@ -67,4 +73,30 @@
 
 .activeLink .icon {
   filter: grayscale(0%) brightness(1) invert(0.5); /* Warna merah untuk aktif */
+}
+
+.logout {
+  display: flex;
+  align-items: center; /* Sejajarkan ikon dan teks */
+  cursor: pointer; /* Tampilkan kursor pointer */
+  padding: 10px;
+  border-top: 1px solid #ddd; /* Garis pembatas */
+  margin-top: auto; /* Pastikan tombol Logout di bagian paling bawah */
+}
+
+.logoutIcon {
+  width: 24px; /* Ukuran ikon Logout */
+  height: 24px;
+  margin-right: 10px; /* Jarak antara ikon dan teks */
+}
+
+.logoutText {
+  font-size: 1rem;
+  color: #333;
+  font-weight: bold;
+  transition: color 0.3s ease;
+}
+
+.logout:hover .logoutText {
+  color: red; /* Warna merah saat hover */
 }

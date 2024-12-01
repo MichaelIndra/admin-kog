@@ -6,9 +6,18 @@ const Sidebar = () => {
   const router = useRouter();
   const listSidebar = [
     { label: 'Homepage', path: '/homepage', icon: '/images/icons/ic_home.svg' },
-    { label: 'About', path: '/about', icon: '/images/icons/ic_book.svg' }
+    { label: 'About', path: '/about', icon: '/images/icons/ic_book.svg' },
+    { label: 'Service', path: '/service', icon: '/images/icons/ic_group.svg' },
+    { label: 'Give', path: '/give', icon: '/images/icons/ic_money.svg' },
+    { label: 'Admin', path: '/admin', icon: '/images/icons/ic_admin.svg' },
+    { label: 'Jemaat', path: '/jemaat', icon: '/images/icons/ic_group.svg' },
 
   ]
+
+  function logoutHandle(){
+
+  }
+
   return (
     <aside className={styles.sidebar}>
       {/* Logo */}
@@ -39,6 +48,10 @@ const Sidebar = () => {
           ))}
         </ul>
       </nav>
+      <div className={styles.logout} onClick={logoutHandle}>
+        <img src="/images/icons/ic_logout.svg" alt="Logout Icon" className={styles.logoutIcon} />
+        <span className={styles.logoutText}>Logout</span>
+      </div>
     </aside>
   );
 }
