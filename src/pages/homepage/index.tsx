@@ -4,9 +4,17 @@ import React, { useEffect, useState } from "react";
 import CardLoadedPastor from "@/components/widgets/card_pastor_loaded";
 import { PastorData } from "@/components/types/PastorProps";
 import config from "@/config";
+import Dialog from "@/components/widgets/dialog_homepage";
+import HeroDialog from "@/components/widgets/hero_dialog";
+import PastorDialog from "@/components/widgets/pastor_dialog";
+import EventDialog from "@/components/widgets/event_dialog";
+import ServiceDialog from "@/components/widgets/service_dialog";
 
 const Homepage = () => {
   const [pastorData, setPastorData] = useState<PastorData[]>([]);
+  const [error, setError] = useState<string | null>(null);
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [currentType, setCurrentType] = useState<string | null>(null);
 
   useEffect(() => {
     const getCookie = (name: string) => {
@@ -34,34 +42,41 @@ const Homepage = () => {
     fetchPastorData();
   }, []);
 
-  const handleEdit = (id: number) => {
+  const handleOpenDialog = (type: string) => {
+    setCurrentType(type); // Set tipe data
+    setIsDialogOpen(true); // Tampilkan dialog
+  };
+
+  const handleCloseDialog = () => {
+    setIsDialogOpen(false); // Tutup dialog
+    setCurrentType(null); // Reset tipe data
+  };
+
+  const handleEdit = (id: number, type: string) => {
     console.log(`Edit pastor with ID: ${id}`);
     // Add edit functionality here
   };
 
-  const handleDelete = (id: number) => {
+  const handleDelete = (id: number, type: string) => {
     console.log(`Delete pastor with ID: ${id}`);
     // Add delete functionality here
   };
 
-  const handleAdd = (type: string) => {
-    switch (type) {
-      case 'pastor':
-        // router.push('/add-pastor'); // Navigasi ke halaman Add Pastor
-        break;
+  const getDialogContent = () => {
+    switch (currentType) {
       case 'hero':
-        // router.push('/add-hero'); // Navigasi ke halaman Add Hero
-        break;
+        return <HeroDialog onClose={handleCloseDialog} />;
+      case 'pastor':
+        return <PastorDialog onClose={handleCloseDialog} />;
       case 'events':
-        // router.push('/add-events'); // Navigasi ke halaman Add Events
-        break;
+        return <EventDialog onClose={handleCloseDialog} />;
       case 'services':
-        // router.push('/add-services'); // Navigasi ke halaman Add Services
-        break;
+        return <ServiceDialog onClose={handleCloseDialog} />;
       default:
-        console.warn('Unknown type:', type);
+        return <p>No content available for this type.</p>;
     }
   };
+
 
   const cards = [
     { leftText: "Hero Section", rightText: "+ Add Data", type: "hero" },
@@ -72,29 +87,37 @@ const Homepage = () => {
   return (
     <div className={styles.homepage}>
       <h1 className={styles.title}>Homepage</h1>
+
+      {error && <p className={styles.error}>{error}</p>}
+
+      
+      {isDialogOpen && (
+        <Dialog onClose={handleCloseDialog}>{getDialogContent()}</Dialog>
+      )}
+
+      {/* Hero awal */}
       <div className={styles.cardContainer}>
         <Card
           key={0}
-          leftText={cards[0].leftText}
-          rightText={cards[0].rightText}
-          type={cards[0].type}
+          leftText="Hero Section"
+          type="hero"
         />
       </div>
-
+      {/* Hero akhir */}
+      {/* Pastor awal */}
       {pastorData.length === 0 ? (
         <div className={styles.cardContainer}>
           <Card
             key={1}
-            leftText={cards[1].leftText}
-            rightText={cards[1].rightText}
-            type={cards[1].type}
+            leftText="Our Pastors"
+            type="pastor"
           />
         </div>
       ) : (
         <div className={styles.loadedCardContainer}>
           <div className="{styles.header}">
             <h2>Pastors</h2>
-            <button className={styles.addButton} onClick={() => handleAdd('pastor')}>
+            <button className={styles.addButton} onClick={() => handleOpenDialog('pastor')}>
               + Add
             </button>
           </div>
@@ -106,31 +129,33 @@ const Homepage = () => {
                 title={pastor.pastor_title}
                 name={pastor.pastor_name}
                 description={pastor.pastor_description}
-                onEdit={() => handleEdit(pastor.id)}
-                onDelete={() => handleDelete(pastor.id)}
+                onEdit={() => handleEdit(pastor.id, 'pastor')}
+                onDelete={() => handleDelete(pastor.id, 'pastor')}
               />
             ))}
           </div>
         </div>
       )}
+      {/* Pastor akhir */}
 
+      {/* Event awal */}
       <div className={styles.cardContainer}>
         <Card
           key={2}
-          leftText={cards[2].leftText}
-          rightText={cards[2].rightText}
-          type={cards[2].type}
+          leftText="Incoming Events"
+          type="events"
         />
       </div>
-
+      {/* Event akhir */}
+      {/* Service awal */}
       <div className={styles.cardContainer}>
         <Card
           key={3}
-          leftText={cards[3].leftText}
-          rightText={cards[3].rightText}
-          type={cards[3].type}
+          leftText="Our Service"
+          type="services"
         />
       </div>
+      {/* Service akhir */}
 
       {/* {cards.map((card, index) => (
                     <Card

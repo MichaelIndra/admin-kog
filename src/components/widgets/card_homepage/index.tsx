@@ -7,7 +7,7 @@ import styles from './cardhomepage.module.scss'
 import React, { useState } from 'react';
 
 
-const Card: React.FC<CardProps> = ({ leftText, rightText, type }) => {
+const Card: React.FC<CardProps> = ({ leftText, type }) => {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
 
   const openDialog = () => setIsDialogOpen(true);
@@ -31,7 +31,7 @@ const Card: React.FC<CardProps> = ({ leftText, rightText, type }) => {
   return (
     <div className={styles.card}>
       <div className={styles.leftText}>{leftText}</div>
-      <div className={styles.rightText}  onClick={openDialog}>{rightText}</div>
+      <div className={styles.rightText}  onClick={openDialog}>+ Add Data</div>
 
       {/* Dialog */}
       {isDialogOpen && (
