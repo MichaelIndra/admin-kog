@@ -64,62 +64,55 @@ const Homepage = () => {
 
   const getDialogContent = () => {
     switch (currentType) {
-      case 'hero':
+      case "hero":
         return <HeroDialog onClose={handleCloseDialog} />;
-      case 'pastor':
+      case "pastor":
         return <PastorDialog onClose={handleCloseDialog} />;
-      case 'events':
+      case "events":
         return <EventDialog onClose={handleCloseDialog} />;
-      case 'services':
+      case "services":
         return <ServiceDialog onClose={handleCloseDialog} />;
       default:
         return <p>No content available for this type.</p>;
     }
   };
 
-
-  const cards = [
-    { leftText: "Hero Section", rightText: "+ Add Data", type: "hero" },
-    { leftText: "Our Pastors", rightText: "+ Add Data", type: "pastor" },
-    { leftText: "Incoming Events", rightText: "+ Add Data", type: "events" },
-    { leftText: "Our Service", rightText: "+ Add Data", type: "services" },
-  ];
+  // const cards = [
+  //   { leftText: "Hero Section", rightText: "+ Add Data", type: "hero" },
+  //   { leftText: "Our Pastors", rightText: "+ Add Data", type: "pastor" },
+  //   { leftText: "Incoming Events", rightText: "+ Add Data", type: "events" },
+  //   { leftText: "Our Service", rightText: "+ Add Data", type: "services" },
+  // ];
   return (
     <div className={styles.homepage}>
       <h1 className={styles.title}>Homepage</h1>
 
       {error && <p className={styles.error}>{error}</p>}
 
-      
       {isDialogOpen && (
         <Dialog onClose={handleCloseDialog}>{getDialogContent()}</Dialog>
       )}
 
       {/* Hero awal */}
       <div className={styles.cardContainer}>
-        <Card
-          key={0}
-          leftText="Hero Section"
-          type="hero"
-        />
+        <Card key={0} leftText="Hero Section" type="hero" />
       </div>
       {/* Hero akhir */}
       {/* Pastor awal */}
       {pastorData.length === 0 ? (
         <div className={styles.cardContainer}>
-          <Card
-            key={1}
-            leftText="Our Pastors"
-            type="pastor"
-          />
+          <Card key={1} leftText="Our Pastors" type="pastor" />
         </div>
       ) : (
         <div className={styles.loadedCardContainer}>
-          <div className="{styles.header}">
-            <h2>Pastors</h2>
-            <button className={styles.addButton} onClick={() => handleOpenDialog('pastor')}>
-              + Add
-            </button>
+          <div className={styles.header}>
+            <h2 className={styles.title}>Pastors</h2>
+            <span
+              className={styles.addText}
+              onClick={() => handleOpenDialog("pastor")}
+            >
+              + Add Data
+            </span>
           </div>
           <div className={styles.cardWrapper}>
             {pastorData.map((pastor) => (
@@ -129,8 +122,7 @@ const Homepage = () => {
                 title={pastor.pastor_title}
                 name={pastor.pastor_name}
                 description={pastor.pastor_description}
-                onEdit={() => handleEdit(pastor.id, 'pastor')}
-                onDelete={() => handleDelete(pastor.id, 'pastor')}
+                id={pastor.id}
               />
             ))}
           </div>
@@ -140,20 +132,12 @@ const Homepage = () => {
 
       {/* Event awal */}
       <div className={styles.cardContainer}>
-        <Card
-          key={2}
-          leftText="Incoming Events"
-          type="events"
-        />
+        <Card key={2} leftText="Incoming Events" type="events" />
       </div>
       {/* Event akhir */}
       {/* Service awal */}
       <div className={styles.cardContainer}>
-        <Card
-          key={3}
-          leftText="Our Service"
-          type="services"
-        />
+        <Card key={3} leftText="Our Service" type="services" />
       </div>
       {/* Service akhir */}
 
