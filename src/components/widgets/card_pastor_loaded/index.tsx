@@ -9,6 +9,7 @@ interface CardLoadedPastorProps {
   description: string;
   id: number;
   onDeleteSuccess: () => void;
+  onEdit : () => void
 }
 
 const CardLoadedPastor: React.FC<CardLoadedPastorProps> = ({
@@ -17,7 +18,8 @@ const CardLoadedPastor: React.FC<CardLoadedPastorProps> = ({
   name,
   description,
   id,
-  onDeleteSuccess
+  onDeleteSuccess,
+  onEdit
 }) => {
   const [token, setToken] = useState("");
   const [isAlertOpen, setIsAlertOpen] = useState(false);
@@ -47,7 +49,7 @@ const CardLoadedPastor: React.FC<CardLoadedPastorProps> = ({
     }
   }, []);
 
-  const onEdit = () => {};
+  // const editData = () => {onEdit};
   const onDelete = async () => {
     try {
       const response = await fetch(

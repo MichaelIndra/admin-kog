@@ -16,6 +16,7 @@ const Homepage = () => {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [currentType, setCurrentType] = useState<string | null>(null);
   const [token, setToken] = useState<string | null>("");
+  const [editDataPastor, setEditDataPastor] = useState<PastorData | null>(null);
 
   const fetchPastorData = async () => {
     if (!token) {
@@ -36,8 +37,9 @@ const Homepage = () => {
   };
 
   const handleOpenDialog = (type: string) => {
-    setCurrentType(type); // Set tipe data
-    setIsDialogOpen(true); // Tampilkan dialog
+    setCurrentType(type); 
+    setEditDataPastor(null); 
+    setIsDialogOpen(true); 
   };
 
   const handleCloseDialog = () => {
@@ -46,13 +48,15 @@ const Homepage = () => {
   };
 
   const handleEdit = (id: number, type: string) => {
-    console.log(`Edit pastor with ID: ${id}`);
+    console.log(`id ${id}, type : ${type}`)
+    if ( type === "pastor") {
+      const dataToEdit  = pastorData.find((pastor) => pastor.id === id);
+      console.log(dataToEdit)
+      setCurrentType("pastor"); 
+      setEditDataPastor(dataToEdit); 
+      setIsDialogOpen(true); 
+    }
     // Add edit functionality here
-  };
-
-  const handleDelete = (id: number, type: string) => {
-    console.log(`Delete pastor with ID: ${id}`);
-    // Add delete functionality here
   };
 
   const getDialogContent = () => {
@@ -60,7 +64,10 @@ const Homepage = () => {
       case "hero":
         return <HeroDialog onClose={handleCloseDialog} onSuccessAdd={fetchAll} />;
       case "pastor":
-        return <PastorDialog onClose={handleCloseDialog} onSuccessAdd={fetchAll} mode="add" />;
+        return <PastorDialog onClose={handleCloseDialog} onSuccessAdd={fetchAll} 
+        mode={editDataPastor ? "edit" : "add"} // Tentukan mode berdasarkan editData
+        editData={editDataPastor || undefined} // Kirim editData jika ada
+        />;
       case "events":
         return <EventDialog onClose={handleCloseDialog} onSuccessAdd={fetchAll} />;
       case "services":
@@ -146,6 +153,7 @@ const Homepage = () => {
                 description={pastor.pastor_description}
                 id={pastor.id}
                 onDeleteSuccess={fetchPastorData}
+                onEdit={() => handleEdit(pastor.id, "pastor")}
               />
             ))}
           </div>

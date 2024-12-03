@@ -55,7 +55,7 @@ const PastorDialog: React.FC<PastorDialogProps> = ({
     e.preventDefault();
 
     // Validasi
-    if (!pastorTitle || !pastorName || !pastorDescription || !pastorImage) {
+    if (!pastorTitle || !pastorName || !pastorDescription || (!pastorImage && mode === "add")) {
       alert("All fields are required!");
       return;
     }
@@ -65,11 +65,17 @@ const PastorDialog: React.FC<PastorDialogProps> = ({
     formData.append("pastor_title", pastorTitle);
     formData.append("pastor_name", pastorName);
     formData.append("pastor_description", pastorDescription);
-    formData.append("pastor_image", pastorImage);
+    if (pastorImage) {
+      formData.append("pastor_image", pastorImage);
+    }
 
     try {
-      const response = await fetch(`${config.API_BASE_URL}/api/admin/pastors`, {
-        method: "POST",
+      const url =
+        mode === "add"
+          ? `${config.API_BASE_URL}/api/admin/pastors`
+          : `${config.API_BASE_URL}/api/admin/pastors/${editData?.id}`;
+      const response = await fetch(url, {
+        method: mode === "add" ? "POST" : "PATCH",
         body: formData,
         headers: {
           Authorization: `Bearer ${token}`,
@@ -129,6 +135,15 @@ const PastorDialog: React.FC<PastorDialogProps> = ({
 
         <div className={styles.field}>
           <label className={styles.label}>Pastor Image</label>
+          {mode === "edit" && editData?.pastor_image && (
+            <div className={styles.imagePreview}>
+              <img
+                src={editData.pastor_image}
+                alt="Pastor Preview"
+                className={styles.preview}
+              />
+            </div>
+          )}
           <input
             type="file"
             className={styles.input}
@@ -136,7 +151,7 @@ const PastorDialog: React.FC<PastorDialogProps> = ({
             onChange={(e) =>
               setPastorImage(e.target.files ? e.target.files[0] : null)
             }
-            required
+            required={mode === "add"}
           />
         </div>
 
