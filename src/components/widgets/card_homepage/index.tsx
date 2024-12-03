@@ -7,7 +7,7 @@ import styles from './cardhomepage.module.scss'
 import React, { useState } from 'react';
 
 
-const Card: React.FC<CardProps> = ({ leftText, type }) => {
+const Card: React.FC<CardProps> = ({ leftText, type, onSuccessAdd }) => {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
 
   const openDialog = () => setIsDialogOpen(true);
@@ -16,13 +16,13 @@ const Card: React.FC<CardProps> = ({ leftText, type }) => {
   const getDialogContent = () => {
     switch (type) {
       case 'hero':
-        return <HeroDialog onClose={closeDialog} />;
+        return <HeroDialog onClose={closeDialog} onSuccessAdd={onSuccessAdd} />;
       case 'pastor':
-        return <PastorDialog onClose={closeDialog} />;
+        return <PastorDialog onClose={closeDialog} onSuccessAdd={onSuccessAdd} mode='add' />;
       case 'events':
-        return <EventDialog onClose={closeDialog} />;
+        return <EventDialog onClose={closeDialog} onSuccessAdd={onSuccessAdd} />;
       case 'services':
-        return <ServiceDialog onClose={closeDialog} />;
+        return <ServiceDialog onClose={closeDialog} onSuccessAdd={onSuccessAdd} />;
       default:
         return <p>Tidak ada konten untuk tipe ini.</p>;
     }

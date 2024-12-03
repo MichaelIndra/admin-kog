@@ -15,32 +15,25 @@ const Homepage = () => {
   const [error, setError] = useState<string | null>(null);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [currentType, setCurrentType] = useState<string | null>(null);
+  const [token, setToken] = useState<string | null>("");
 
-  useEffect(() => {
-    const getCookie = (name: string) => {
-      const cookies = document.cookie.split("; ");
-      const cookie = cookies.find((row) => row.startsWith(`${name}=`));
-      return cookie ? cookie.split("=")[1] : null;
-    };
-
-    const token = getCookie("token");
-
-    // Simulate fetch from server
-    const fetchPastorData = async () => {
-      const response = await fetch(`${config.API_BASE_URL}/api/admin/pastors`, {
-        method: "GET",
-        headers: {
-          Authorization: `Bearer ${token}`, // Sertakan token dalam header
-        },
-      });
-      console.log(response);
-      const data = await response.json();
-      console.log(data);
-      setPastorData(data);
-    };
-
-    fetchPastorData();
-  }, []);
+  const fetchPastorData = async () => {
+    if (!token) {
+      console.error("Token is missing. Cannot fetch data.");
+      setError("Authentication token is missing. Please log in again.");
+      return;
+    }
+    const response = await fetch(`${config.API_BASE_URL}/api/admin/pastors`, {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${token}`, // Sertakan token dalam header
+      },
+    });
+    console.log(response);
+    const data = await response.json();
+    console.log(data);
+    setPastorData(data);
+  };
 
   const handleOpenDialog = (type: string) => {
     setCurrentType(type); // Set tipe data
@@ -65,13 +58,13 @@ const Homepage = () => {
   const getDialogContent = () => {
     switch (currentType) {
       case "hero":
-        return <HeroDialog onClose={handleCloseDialog} />;
+        return <HeroDialog onClose={handleCloseDialog} onSuccessAdd={fetchAll} />;
       case "pastor":
-        return <PastorDialog onClose={handleCloseDialog} />;
+        return <PastorDialog onClose={handleCloseDialog} onSuccessAdd={fetchAll} mode="add" />;
       case "events":
-        return <EventDialog onClose={handleCloseDialog} />;
+        return <EventDialog onClose={handleCloseDialog} onSuccessAdd={fetchAll} />;
       case "services":
-        return <ServiceDialog onClose={handleCloseDialog} />;
+        return <ServiceDialog onClose={handleCloseDialog} onSuccessAdd={fetchAll} />;
       default:
         return <p>No content available for this type.</p>;
     }
@@ -83,6 +76,35 @@ const Homepage = () => {
   //   { leftText: "Incoming Events", rightText: "+ Add Data", type: "events" },
   //   { leftText: "Our Service", rightText: "+ Add Data", type: "services" },
   // ];
+
+  useEffect(() => {
+    const getCookie = (name: string) => {
+      const cookies = document.cookie.split("; ");
+      const cookie = cookies.find((row) => row.startsWith(`${name}=`));
+      return cookie ? cookie.split("=")[1] : null;
+    };
+
+    const getToken = getCookie("token");
+    console.log("Token from cookie:", getToken); // Log token untuk debugging
+    if (!getToken) {
+      setError("Token not found. Please log in again.");
+      return;
+    }
+    setToken(getToken)
+    // Simulate fetch from server
+
+   
+  }, []);
+
+  useEffect(()=>{
+    if(token){
+      fetchPastorData()
+    }
+  },[token])
+
+  const fetchAll = () => {
+    fetchPastorData()
+  }
   return (
     <div className={styles.homepage}>
       <h1 className={styles.title}>Homepage</h1>
@@ -95,13 +117,13 @@ const Homepage = () => {
 
       {/* Hero awal */}
       <div className={styles.cardContainer}>
-        <Card key={0} leftText="Hero Section" type="hero" />
+        <Card key={0} leftText="Hero Section" type="hero" onSuccessAdd={fetchAll} />
       </div>
       {/* Hero akhir */}
       {/* Pastor awal */}
       {pastorData.length === 0 ? (
         <div className={styles.cardContainer}>
-          <Card key={1} leftText="Our Pastors" type="pastor" />
+          <Card key={1} leftText="Our Pastors" type="pastor" onSuccessAdd={fetchAll} />
         </div>
       ) : (
         <div className={styles.loadedCardContainer}>
@@ -123,6 +145,7 @@ const Homepage = () => {
                 name={pastor.pastor_name}
                 description={pastor.pastor_description}
                 id={pastor.id}
+                onDeleteSuccess={fetchPastorData}
               />
             ))}
           </div>
@@ -132,12 +155,12 @@ const Homepage = () => {
 
       {/* Event awal */}
       <div className={styles.cardContainer}>
-        <Card key={2} leftText="Incoming Events" type="events" />
+        <Card key={2} leftText="Incoming Events" type="events" onSuccessAdd={fetchAll} />
       </div>
       {/* Event akhir */}
       {/* Service awal */}
       <div className={styles.cardContainer}>
-        <Card key={3} leftText="Our Service" type="services" />
+        <Card key={3} leftText="Our Service" type="services" onSuccessAdd={fetchAll} />
       </div>
       {/* Service akhir */}
 

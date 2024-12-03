@@ -8,6 +8,7 @@ interface CardLoadedPastorProps {
   name: string;
   description: string;
   id: number;
+  onDeleteSuccess: () => void;
 }
 
 const CardLoadedPastor: React.FC<CardLoadedPastorProps> = ({
@@ -16,6 +17,7 @@ const CardLoadedPastor: React.FC<CardLoadedPastorProps> = ({
   name,
   description,
   id,
+  onDeleteSuccess
 }) => {
   const [token, setToken] = useState("");
   const [isAlertOpen, setIsAlertOpen] = useState(false);
@@ -64,6 +66,7 @@ const CardLoadedPastor: React.FC<CardLoadedPastorProps> = ({
 
       alert("Data submitted successfully!");
       closeAlert()
+      onDeleteSuccess()
     } catch (error) {
       console.error("Error submitting data:", error);
       alert("Failed to submit data");

@@ -3,34 +3,53 @@ import { DialogProps } from "@/components/types/DialogProps";
 import config from "@/config";
 import styles from "./pastor.module.scss";
 
+interface PastorDialogProps extends DialogProps {
+  mode: "add" | "edit";
+  editData?: {
+    id: number;
+    pastor_title: string;
+    pastor_name: string;
+    pastor_description: string;
+    pastor_image?: string; // URL atau path ke gambar
+  };
+}
 
-const PastorDialog: React.FC<DialogProps> = ({ onClose }) => {
-  const [token, setToken] =useState("");
+const PastorDialog: React.FC<PastorDialogProps> = ({
+  onClose,
+  onSuccessAdd,
+  mode,
+  editData,
+}) => {
+  const [token, setToken] = useState("");
   const [pastorTitle, setPastorTitle] = useState("");
   const [pastorName, setPastorName] = useState("");
   const [pastorDescription, setPastorDescription] = useState("");
   const [pastorImage, setPastorImage] = useState<File | null>(null);
 
-
   useEffect(() => {
     // Membaca cookies
     const getCookie = (name: string) => {
-      const cookies = document.cookie.split('; ');
+      const cookies = document.cookie.split("; ");
       const cookie = cookies.find((row) => row.startsWith(`${name}=`));
-      return cookie ? cookie.split('=')[1] : null;
+      return cookie ? cookie.split("=")[1] : null;
     };
 
-    const token = getCookie('token'); 
+    const token = getCookie("token");
     if (token) {
       try {
-        
         // console.log(decoded) masih dapet e {sub: 1, role: 'GUEST', iat: 1733017688, exp: 1733021288}
-        setToken(token); 
+        setToken(token);
       } catch (err) {
-        console.error('Invalid token:', err);
+        console.error("Invalid token:", err);
       }
     }
-  }, []); 
+
+    if (mode === "edit" && editData) {
+      setPastorTitle(editData.pastor_title);
+      setPastorName(editData.pastor_name);
+      setPastorDescription(editData.pastor_description);
+    }
+  }, [mode, editData]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -56,13 +75,14 @@ const PastorDialog: React.FC<DialogProps> = ({ onClose }) => {
           Authorization: `Bearer ${token}`,
         },
       });
-      console.log(response)
+      console.log(response);
       if (!response.ok) {
         throw new Error("Failed to submit data");
       }
 
       alert("Data submitted successfully!");
-      onClose(); // Tutup dialog setelah berhasil
+      onClose();
+      onSuccessAdd();
     } catch (error) {
       console.error("Error submitting data:", error);
       alert("Failed to submit data");
@@ -70,9 +90,6 @@ const PastorDialog: React.FC<DialogProps> = ({ onClose }) => {
   };
 
   return (
-
-
-    
     <div>
       <form className={styles.form} onSubmit={handleSubmit}>
         <h2 className={styles.title}>Pastors</h2>
@@ -124,7 +141,7 @@ const PastorDialog: React.FC<DialogProps> = ({ onClose }) => {
         </div>
 
         <div className={styles.buttons}>
-        <button
+          <button
             type="button"
             className={styles.cancelButton}
             onClick={onClose}
@@ -132,9 +149,8 @@ const PastorDialog: React.FC<DialogProps> = ({ onClose }) => {
             Cancel
           </button>
           <button type="submit" className={styles.submitButton}>
-            Submit
+            {mode === "add" ? "Submit" : "Update"}
           </button>
-          
         </div>
       </form>
     </div>
