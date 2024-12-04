@@ -19,7 +19,7 @@ const AppShell = (props: AppShellProps) => {
         <div className={styles.layout}>
           <Header />
           <div className={styles.body}>
-            <Sidebar />
+            <aside><Sidebar /></aside>
             <main className={styles.mainContent}>{children}</main>
           </div>
         </div>

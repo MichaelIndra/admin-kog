@@ -87,6 +87,42 @@ const Homepage = () => {
     }
   };
 
+
+  const fetchServiceTypeData = async () => {
+    console.log('get service type data')
+    if (!token) {
+      console.error("Token is missing. Cannot fetch data.");
+      setError("Authentication token is missing. Please log in again.");
+      return;
+    }
+    try {
+      const response = await fetch(`${config.API_BASE_URL}/api/admin/service-types`, {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`, // Sertakan token dalam header
+        },
+      });
+
+      // Periksa status HTTP
+      if (!response.ok) {
+        console.error(`Error fetching events: ${response.status}`);
+        const errorMessage = await response.text(); // Ambil pesan error dari server (jika ada)
+        setError(
+          `Failed to fetch events. Server responded with status: ${response.status}. ${errorMessage}`
+        );
+        return;
+      }
+
+      // Proses data jika respons sukses
+      const data = await response.json();
+      console.log("Event data fetched:", data);
+      setServiceTypeData(data);
+    } catch (error) {
+      console.error("An error occurred while fetching event data:", error);
+      setError("An unexpected error occurred. Please try again later.");
+    }
+  };
+
   const handleOpenDialog = (type: string) => {
     setCurrentType(type);
     setEditDataPastor(null);
@@ -137,10 +173,11 @@ const Homepage = () => {
           mode={editDataEvent ? "edit" : "add"}
           editData={editDataEvent || undefined}
         />;
-        case "event":
+        case "serviceType":
           return <ServiceTypeDialog onClose={handleCloseDialog} onSuccessAdd={fetchAll}
-            mode={editDataEvent ? "edit" : "add"}
+            mode={editDataServiceType ? "edit" : "add"}
             editData={editDataServiceType || undefined}
+            pastors={pastorData}
           />;  
       case "services":
         return <ServiceDialog onClose={handleCloseDialog} onSuccessAdd={fetchAll} />;
@@ -179,12 +216,14 @@ const Homepage = () => {
     if (token) {
       fetchPastorData()
       fetchEventData()
+      fetchServiceTypeData()
     }
   }, [token])
 
   const fetchAll = () => {
     fetchPastorData()
     fetchEventData()
+    fetchServiceTypeData()
   }
   return (
     <div className={styles.homepage}>
@@ -298,7 +337,8 @@ const Homepage = () => {
                 pastor_id={event.pastor_id}
                 service_type_image={event.service_type_image}
                 service_type_thumbnail={event.service_type_thumbnail}
-                onDeleteSuccess={fetchEventData}
+                service_type_description={event.service_type_description}
+                onDeleteSuccess={fetchServiceTypeData}
                 onEdit={() => handleEdit(event.id, "serviceType")}
               />
             ))}

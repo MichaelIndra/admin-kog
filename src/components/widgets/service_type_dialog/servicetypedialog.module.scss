@@ -1,7 +1,8 @@
 .form {
+    width: 80vh;
     display: flex;
     flex-direction: column;
-    gap: 16px;
+    gap: 5px;
     padding: 20px;
     background-color: #ffffff;
     border-radius: 8px;
@@ -41,6 +42,13 @@
   
   .textarea {
     resize: vertical;
+  }
+
+  .textareaNormal{
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 12px;
   }
   
   .buttons {

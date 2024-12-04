@@ -8,22 +8,24 @@ import { PastorData } from "@/components/types/PastorProps";
 interface ServiceTypeDialogProps extends DialogProps {
     mode: "add" | "edit";
     editData?: ServiceTypeData
+    pastors?: PastorData[]
 }
 
 const ServiceTypeDialog: React.FC<ServiceTypeDialogProps> = ({
     onClose,
     onSuccessAdd,
     mode,
-    editData
+    editData,
+    pastors
 }) => {
     const [token, setToken] = useState("");
     const [serviceType, setServiceType] = useState("")
     const [serviceTypeContent, setServiceTypeContent] = useState("")
     const [serviceTypeUrl, setServiceTypeUrl] = useState("")
     const [pastorData, setPastorData] = useState<PastorData | null>(null);
-    const [pastors, setPastorDataAll] = useState<PastorData[]>([]);
     const [serviceTypeImage, setServiceTypeImage] = useState<File | null>(null);
     const [serviceTypeThumbnail, setServiceThumbnail] = useState<File | null>(null);
+    const [serviceTypeDescription, setServiceTypeDescription] = useState("")
 
     useEffect(() => {
         // Membaca cookies
@@ -47,45 +49,29 @@ const ServiceTypeDialog: React.FC<ServiceTypeDialogProps> = ({
     }, []);
 
     const getDataPastorById = async (pastor_id: number) => {
-        const dataPastor = pastors.find((pastor) => pastor.id === pastor_id)
+        if(pastors){
+            const dataPastor = pastors.find((pastor) => pastor.id === pastor_id)
         setPastorData(dataPastor ?? null)
-    }
-
-    const getDataPastorAll = async () => {
-        if (!token) {
-            console.error("Token is missing. Cannot fetch data.");
-            return;
         }
-        try {
-            const response = await fetch(`${config.API_BASE_URL}/api/admin/pastors`, {
-                method: "GET",
-                headers: {
-                    Authorization: `Bearer ${token}`, // Sertakan token dalam header
-                },
-            });
-            console.log(`data pastor : ${response.status}`);
-            const data = await response.json();
-            console.log(data);
-            setPastorDataAll(data);
-        } catch (error) {
-            console.error("An error occurred while fetching pastor data:", error);
-
-        }
+        
     }
 
     
 
+    
+
     useEffect(() => {
-        if(token){
-            getDataPastorAll()
-        }
+       
         
 
         if (mode === "edit" && editData) {
             setServiceType(editData.service_type);
             setServiceTypeContent(JSON.stringify(editData.service_type_content));
             setServiceTypeUrl(editData.service_type_url);
-            getDataPastorById(editData.pastor_id)
+            
+                getDataPastorById(editData.pastor_id)
+           
+            setServiceTypeDescription(editData.service_type_description)
 
         }
     }, [mode, editData, token])
@@ -94,7 +80,7 @@ const ServiceTypeDialog: React.FC<ServiceTypeDialogProps> = ({
         e.preventDefault();
 
         // Validasi
-        if (!serviceType || !serviceTypeContent || !serviceTypeUrl || !pastorData || (!serviceTypeImage && mode === "add") || (!serviceTypeThumbnail && mode === "add")) {
+        if (!serviceType || !serviceTypeContent || !serviceTypeUrl || !serviceTypeDescription || !pastorData || (!serviceTypeImage && mode === "add") || (!serviceTypeThumbnail && mode === "add")) {
             alert("All fields are required!");
             return;
         }
@@ -103,6 +89,7 @@ const ServiceTypeDialog: React.FC<ServiceTypeDialogProps> = ({
         const formData = new FormData();
         formData.append("service_type", serviceType);
         formData.append("service_type_url", serviceTypeUrl);
+        formData.append("service_type_description", serviceTypeDescription);
         formData.append("pastor_id", pastorData.id.toString());
         try {
             const jsonDataString = JSON.parse(serviceTypeContent); // Pastikan valid JSON
@@ -118,7 +105,7 @@ const ServiceTypeDialog: React.FC<ServiceTypeDialogProps> = ({
         if (serviceTypeThumbnail) {
             formData.append("service_type_thumbnail", serviceTypeThumbnail);
         }
-
+        console.log(formData)
         try {
             const url =
                 mode === "add"
@@ -148,7 +135,7 @@ const ServiceTypeDialog: React.FC<ServiceTypeDialogProps> = ({
     return (
         <div>
             <form className={styles.form} onSubmit={handleSubmit}>
-                <h2 className={styles.title}>Service Type</h2>
+                <h2 className={styles.title}>Service Type {mode}</h2>
                 <p className={styles.subTitle}>Please input service type details</p>
 
                 <div className={styles.field}>
@@ -190,7 +177,7 @@ const ServiceTypeDialog: React.FC<ServiceTypeDialogProps> = ({
                         id="pastor"
                         value={pastorData?.id || ""}
                         onChange={(e) => {
-                            const pastor = pastors.find(
+                            const pastor = pastors?.find(
                                 (p) => p.id === Number(e.target.value)
                             );
                             setPastorData(pastor || null); // Simpan objek pastor
@@ -200,12 +187,22 @@ const ServiceTypeDialog: React.FC<ServiceTypeDialogProps> = ({
                         <option value="" disabled>
                             -- Select a Pastor --
                         </option>
-                        {pastors.map((pastor) => (
+                        {pastors?.map((pastor) => (
                             <option key={pastor.id} value={pastor.id}>
                                 {pastor.pastor_name}
                             </option>
                         ))}
                     </select>
+                </div>
+
+                <div className={styles.field}>
+                    <label className={styles.label}>Service Type Description</label>
+                    <textarea
+                        className={styles.textareaNormal}
+                        value={serviceTypeDescription}
+                        onChange={(e) => setServiceTypeDescription(e.target.value)}
+                        required
+                    />
                 </div>
 
                 <div className={styles.field}>

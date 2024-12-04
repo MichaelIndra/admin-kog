@@ -6,4 +6,5 @@ export interface ServiceTypeData{
     pastor_id : number;
     service_type_image: string;
     service_type_thumbnail: string;
+    service_type_description : string
 }

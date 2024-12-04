@@ -95,27 +95,26 @@ const CardLoadedServiceType: React.FC<CardLoadedServiceTypeProps> = ({
     }
 
     useEffect(() => {
-        getDataPastor()
-    }, [pastor_id])
+        if(token){
+            getDataPastor()
+        }
+    }, [ token])
     return (
         <div className={styles.card}>
             <div className={styles.imageContainer}>
                 <img src={service_type_image} alt={service_type} className={styles.image} />
             </div>
             <div className={styles.content}>
-                <h3 className={styles.title}>{service_type}</h3>
-                <p className={styles.name}>{pastorData?.pastor_name && ''}</p>
+                <h3 className={styles.title}>{service_type} - {pastorData?.pastor_name}</h3>
                 <p className={styles.name}>{service_type_url}</p>
 
                 <div className={styles.socialMediaLinks}>
-                    <h4>Social Media Links:</h4>
+                    <h2>Content Type:</h2>
                     <ul>
-                        {Object.entries(service_type_content).map(([platform, url], index) => (
+                        {Object.entries(service_type_content).map(([platform, data], index) => (
                             <li key={index}>
-                                <strong>{platform}:</strong>{" "}
-                                <a href={url} target="_blank" rel="noopener noreferrer">
-                                    {url}
-                                </a>
+                                <strong>{platform}:{data}</strong>{" "}
+                                
                             </li>
                         ))}
                     </ul>

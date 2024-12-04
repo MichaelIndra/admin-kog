@@ -15,6 +15,7 @@
     color: white; /* Warna teks */
     padding: 20px;
     height: 100%; /* Sidebar memenuhi tinggi body */
+    position: fixed;
   }
   
   .mainContent {
@@ -22,6 +23,6 @@
     padding: 20px;
     flex:1;
     position: relative;
-    overflow: hidden; /* Scroll jika konten meluap */
+    overflow-y: auto /* Scroll jika konten meluap */
   }
   
