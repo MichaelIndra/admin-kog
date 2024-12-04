@@ -19,8 +19,8 @@ const Card: React.FC<CardProps> = ({ leftText, type, onSuccessAdd }) => {
         return <HeroDialog onClose={closeDialog} onSuccessAdd={onSuccessAdd} />;
       case 'pastor':
         return <PastorDialog onClose={closeDialog} onSuccessAdd={onSuccessAdd} mode='add' />;
-      case 'events':
-        return <EventDialog onClose={closeDialog} onSuccessAdd={onSuccessAdd} />;
+      case 'event':
+        return <EventDialog onClose={closeDialog} onSuccessAdd={onSuccessAdd} mode='add' />;
       case 'services':
         return <ServiceDialog onClose={closeDialog} onSuccessAdd={onSuccessAdd} />;
       default:

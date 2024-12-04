@@ -1,0 +1,96 @@
+.form {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    padding: 20px;
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  .title {
+    font-size: 22px;
+    font-weight: bold;
+    margin-bottom: 12px;
+    text-align: center;
+  }
+
+  .title {
+    font-size: 20px;
+    margin-bottom: 12px;
+    text-align: center;
+  }
+  
+  .field {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .label {
+    font-weight: bold;
+    margin-bottom: 4px;
+  }
+  
+  .input,
+  .textarea {
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 16px;
+  }
+  
+  .textarea {
+    resize: vertical;
+  }
+  
+  .buttons {
+    display: flex;
+    gap: 10px;
+    justify-content: space-between;
+  }
+  
+  .submitButton {
+    padding: 10px 20px;
+    background-color: red;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  .cancelButton {
+    padding: 10px 20px;
+    color: red;
+    border: 0px ;
+    cursor: pointer;
+  }
+  
+  .submitButton:hover {
+    background-color: #0056b3;
+  }
+  
+  .cancelButton:hover {
+    background-color: #e0e0e0;
+  }
+  
+  .imagePreview {
+    margin-bottom: 10px;
+    text-align: center;
+  }
+  
+  .preview {
+    max-width: 80%;
+    max-height: 100px;
+    border-radius: 8px;
+    object-fit: cover;
+  }
+
+  .textarea {
+    min-height: 100px;
+    font-family: monospace;
+    background-color: #f9f9f9;
+    border: 1px solid #ccc;
+    padding: 10px;
+    border-radius: 4px;
+    resize: vertical;
+  }

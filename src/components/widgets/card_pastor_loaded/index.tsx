@@ -25,10 +25,7 @@ const CardLoadedPastor: React.FC<CardLoadedPastorProps> = ({
   const [isAlertOpen, setIsAlertOpen] = useState(false);
 
   const openAlert = () => setIsAlertOpen(true);
-  const closeAlert = () => {
-    
-    setIsAlertOpen(false);
-  }
+  const closeAlert = () => setIsAlertOpen(false);
 
   useEffect(() => {
     // Membaca cookies
@@ -63,15 +60,15 @@ const CardLoadedPastor: React.FC<CardLoadedPastorProps> = ({
       );
       console.log(response);
       if (!response.ok) {
-        throw new Error("Failed to submit data");
+        throw new Error("Failed to delete data");
       }
 
-      alert("Data submitted successfully!");
+      alert("Data delete successfully!");
       closeAlert()
       onDeleteSuccess()
     } catch (error) {
-      console.error("Error submitting data:", error);
-      alert("Failed to submit data");
+      console.error("Error delete data:", error);
+      alert("Failed to delete data");
       closeAlert()
     }
   };

@@ -1,0 +1,200 @@
+.card {
+    width: 300px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    background-color: #fff;
+    margin-right: 16px; /* Jarak antar card */
+  }
+  
+  .imageContainer {
+    width: 100%;
+    height: 200px;
+    overflow: hidden;
+    border-radius: 8px;
+    margin-bottom: 16px;
+  }
+  
+  .image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  
+  .content {
+    flex-grow: 1;
+    margin-bottom: 16px;
+  }
+  
+  .title {
+    padding-left: 10px;
+    font-size: 18px;
+    font-weight: bold;
+    
+  }
+  
+  .name {
+    padding-left: 10px;
+    font-size: 16px;
+    
+  }
+  
+  .description {
+    padding-left: 10px;
+    font-size: 14px;
+    color: #555;
+  }
+
+  .socialMediaLinks {
+    margin-top: 10px;
+    padding-left: 10px;
+  
+    h4 {
+      margin-bottom: 5px;
+      font-size: 14px;
+      font-weight: bold;
+    }
+  
+    ul {
+      list-style-type: none;
+      padding: 0;
+  
+      li {
+        margin-bottom: 5px;
+  
+        a {
+          color: #007bff;
+          text-decoration: none;
+  
+          &:hover {
+            text-decoration: underline;
+          }
+        }
+      }
+    }
+  }
+
+  .divider {
+    border: none;
+    height: 1px;
+    background-color: #ddd;
+    margin: 0;
+  }
+  
+  .actions {
+    display: flex;
+    flex-direction: row;
+    height: 48px; /* Tinggi tombol */
+  }
+  
+  .editButton {
+    flex: 1; /* Mengisi separuh kontainer */
+    background-color: #fff; /* Background putih */
+    color: #dc3545; /* Teks merah */
+    border: 1px solid #ddd; /* Border tombol */
+    border-top: none; /* Hilangkan border atas */
+    border-right: 1px solid #ddd; /* Border pemisah di tengah */
+    border-bottom-left-radius: 8px; /* Radius kiri bawah */
+    font-size: 14px;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .deleteButton {
+    flex: 1; /* Mengisi separuh kontainer */
+    background-color: #dc3545; /* Background merah */
+    color: #fff; /* Teks putih */
+    border: 1px solid #dc3545; /* Border tombol */
+    border-top: none; /* Hilangkan border atas */
+    border-bottom-right-radius: 8px; /* Radius kanan bawah */
+    font-size: 14px;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .editButton:hover {
+    background-color: #f8f9fa; /* Efek hover untuk edit */
+    color: #b02a37; /* Teks lebih gelap saat hover */
+  }
+  
+  .deleteButton:hover {
+    background-color: #b02a37; /* Efek hover untuk delete */
+  }
+
+  /* Alert Dialog */
+.alertOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.5); /* Transparansi untuk overlay */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999; /* Pastikan berada di atas elemen lainnya */
+}
+
+.alertDialog {
+  width: 300px;
+  background: white;
+  border-radius: 8px;
+  padding: 20px;
+  text-align: center;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  animation: fadeIn 0.3s ease-in-out; /* Efek animasi */
+}
+
+.alertActions {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+}
+
+.cancelButton {
+  padding: 8px 16px;
+  background-color: #f5f5f5;
+  color: #000;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  cursor: pointer;
+  flex: 1;
+  margin-right: 8px;
+}
+
+.confirmButton {
+  padding: 8px 16px;
+  background-color: #dc3545;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  flex: 1;
+}
+
+.cancelButton:hover {
+  background-color: #e0e0e0;
+}
+
+.confirmButton:hover {
+  background-color: #b02a37;
+}
+
+/* Animasi */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}

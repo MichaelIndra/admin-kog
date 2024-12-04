@@ -2,16 +2,11 @@ import React, { useState, useEffect } from "react";
 import { DialogProps } from "@/components/types/DialogProps";
 import config from "@/config";
 import styles from "./pastor.module.scss";
+import { PastorData } from "@/components/types/PastorProps";
 
 interface PastorDialogProps extends DialogProps {
   mode: "add" | "edit";
-  editData?: {
-    id: number;
-    pastor_title: string;
-    pastor_name: string;
-    pastor_description: string;
-    pastor_image?: string; // URL atau path ke gambar
-  };
+  editData?: PastorData;
 }
 
 const PastorDialog: React.FC<PastorDialogProps> = ({
