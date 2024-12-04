@@ -3,6 +3,7 @@ import EventDialog from '../event_dialog';
 import HeroDialog from '../hero_dialog';
 import PastorDialog from '../pastor_dialog';
 import ServiceDialog from '../service_dialog';
+import ServiceTypeDialog from '../service_type_dialog';
 import styles from './cardhomepage.module.scss'
 import React, { useState } from 'react';
 
@@ -23,6 +24,8 @@ const Card: React.FC<CardProps> = ({ leftText, type, onSuccessAdd }) => {
         return <EventDialog onClose={closeDialog} onSuccessAdd={onSuccessAdd} mode='add' />;
       case 'services':
         return <ServiceDialog onClose={closeDialog} onSuccessAdd={onSuccessAdd} />;
+      case 'serviceType' : 
+        return <ServiceTypeDialog onClose={closeDialog} onSuccessAdd={onSuccessAdd} mode='add' />
       default:
         return <p>Tidak ada konten untuk tipe ini.</p>;
     }

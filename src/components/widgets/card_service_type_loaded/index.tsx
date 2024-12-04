@@ -1,32 +1,28 @@
 import React, { useEffect, useState } from "react";
 import config from "@/config";
-import styles from './cardeventloaded.module.scss';
+import styles from "./cardservicetypeloaded.module.scss"
+import { ServiceTypeData } from "@/components/types/ServiceTypeProps";
+import { PastorData } from "@/components/types/PastorProps";
 
-interface CardLoadedEventProps {
-    id: number;
-    title: string;
-    startDate: string;
-    endDate: string;
-    socialMediaLinks: string | { [key: string]: string };
-    description: string;
-    image: string;
+interface CardLoadedServiceTypeProps extends ServiceTypeData {
     onDeleteSuccess: () => void;
     onEdit: () => void
 }
 
-const CardLoadedEvent: React.FC<CardLoadedEventProps> = ({
+const CardLoadedServiceType: React.FC<CardLoadedServiceTypeProps> = ({
     id,
-    title,
-    startDate,
-    endDate,
-    socialMediaLinks,
-    description,
-    image,
+    service_type,
+    service_type_content,
+    service_type_url,
+    pastor_id,
+    service_type_image,
+    service_type_thumbnail,
     onDeleteSuccess,
     onEdit
 }) => {
     const [token, setToken] = useState("");
     const [isAlertOpen, setIsAlertOpen] = useState(false);
+    const [pastorData, setPastorData] = useState<PastorData | null>(null);
 
     const openAlert = () => setIsAlertOpen(true);
     const closeAlert = () => setIsAlertOpen(false);
@@ -53,7 +49,7 @@ const CardLoadedEvent: React.FC<CardLoadedEventProps> = ({
     const onDelete = async () => {
         try {
             const response = await fetch(
-                `${config.API_BASE_URL}/api/admin/events/${id}`,
+                `${config.API_BASE_URL}/api/admin/service-types/${id}`,
                 {
                     method: "DELETE",
                     headers: {
@@ -75,27 +71,46 @@ const CardLoadedEvent: React.FC<CardLoadedEventProps> = ({
             closeAlert()
         }
     };
-    const formatDate = (dateString: string) => {
-        const date = new Date(dateString);
-        return date.toLocaleDateString('id-ID', {
-          day: '2-digit',
-          month: '2-digit',
-          year: 'numeric',
-        }); // Output: dd/mm/yyyy
-      };
+
+    const getDataPastor = async () =>{
+        if (!token) {
+            console.error("Token is missing. Cannot fetch data.");
+            return;
+        }
+        try {
+            const response = await fetch(`${config.API_BASE_URL}/api/admin/pastors/${pastor_id}`, {
+                method: "GET",
+                headers: {
+                    Authorization: `Bearer ${token}`, // Sertakan token dalam header
+                },
+            });
+            console.log(`data pastor : ${response.status}`);
+            const data = await response.json();
+            console.log(data);
+            setPastorData(data);
+        } catch (error) {
+            console.error("An error occurred while fetching pastor data:", error);
+            
+        }
+    }
+
+    useEffect(() => {
+        getDataPastor()
+    }, [pastor_id])
     return (
         <div className={styles.card}>
             <div className={styles.imageContainer}>
-                <img src={image} alt={title} className={styles.image} />
+                <img src={service_type_image} alt={service_type} className={styles.image} />
             </div>
             <div className={styles.content}>
-                <h3 className={styles.title}>{title}</h3>
-                <p className={styles.name}>{formatDate(startDate)}</p>
-                <p className={styles.name}>{formatDate(endDate)}</p>
+                <h3 className={styles.title}>{service_type}</h3>
+                <p className={styles.name}>{pastorData?.pastor_name && ''}</p>
+                <p className={styles.name}>{service_type_url}</p>
+
                 <div className={styles.socialMediaLinks}>
                     <h4>Social Media Links:</h4>
                     <ul>
-                        {Object.entries(socialMediaLinks).map(([platform, url], index) => (
+                        {Object.entries(service_type_content).map(([platform, url], index) => (
                             <li key={index}>
                                 <strong>{platform}:</strong>{" "}
                                 <a href={url} target="_blank" rel="noopener noreferrer">
@@ -105,7 +120,9 @@ const CardLoadedEvent: React.FC<CardLoadedEventProps> = ({
                         ))}
                     </ul>
                 </div>
-                <p className={styles.name}>{description}</p>
+                <div className={styles.imageThumbnail}>
+                    <img src={service_type_thumbnail} alt={service_type} className={styles.imageThumnailDetail} />
+                </div>
             </div>
             <hr className={styles.divider} />
             <div className={styles.actions}>
@@ -135,7 +152,6 @@ const CardLoadedEvent: React.FC<CardLoadedEventProps> = ({
         </div>
 
     )
-
 }
 
-export default CardLoadedEvent;
+export default CardLoadedServiceType;
