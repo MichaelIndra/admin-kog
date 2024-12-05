@@ -1,3 +1,4 @@
+import { ServiceTypeData } from '@/components/types/ServiceTypeProps';
 import Dialog from '../dialog_homepage';
 import EventDialog from '../event_dialog';
 import HeroDialog from '../hero_dialog';
@@ -6,9 +7,15 @@ import ServiceDialog from '../service_dialog';
 import ServiceTypeDialog from '../service_type_dialog';
 import styles from './cardhomepage.module.scss'
 import React, { useState } from 'react';
+import { PastorData } from '@/components/types/PastorProps';
 
 
-const Card: React.FC<CardProps> = ({ leftText, type, onSuccessAdd }) => {
+interface CustomCardProps extends CardProps{
+  serviceTypes? :  ServiceTypeData[]
+  pastors? : PastorData[]
+}
+
+const Card: React.FC<CustomCardProps> = ({ leftText, type, onSuccessAdd ,serviceTypes, pastors}) => {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
 
   const openDialog = () => setIsDialogOpen(true);
@@ -23,9 +30,9 @@ const Card: React.FC<CardProps> = ({ leftText, type, onSuccessAdd }) => {
       case 'event':
         return <EventDialog onClose={closeDialog} onSuccessAdd={onSuccessAdd} mode='add' />;
       case 'services':
-        return <ServiceDialog onClose={closeDialog} onSuccessAdd={onSuccessAdd} />;
+        return <ServiceDialog onClose={closeDialog} onSuccessAdd={onSuccessAdd} mode='add' serviceTypes={serviceTypes} />;
       case 'serviceType' : 
-        return <ServiceTypeDialog onClose={closeDialog} onSuccessAdd={onSuccessAdd} mode='add' />
+        return <ServiceTypeDialog onClose={closeDialog} onSuccessAdd={onSuccessAdd} mode='add'  pastors={pastors}/>
       default:
         return <p>Tidak ada konten untuk tipe ini.</p>;
     }

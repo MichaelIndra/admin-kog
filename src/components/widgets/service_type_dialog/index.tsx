@@ -44,11 +44,9 @@ const ServiceTypeDialog: React.FC<ServiceTypeDialogProps> = ({
                 console.error("Invalid token:", err);
             }
         }
-
-
     }, []);
 
-    const getDataPastorById = async (pastor_id: number) => {
+    const getDataPastorById =  (pastor_id: number) => {
         if(pastors){
             const dataPastor = pastors.find((pastor) => pastor.id === pastor_id)
         setPastorData(dataPastor ?? null)
@@ -61,16 +59,11 @@ const ServiceTypeDialog: React.FC<ServiceTypeDialogProps> = ({
     
 
     useEffect(() => {
-       
-        
-
         if (mode === "edit" && editData) {
             setServiceType(editData.service_type);
             setServiceTypeContent(JSON.stringify(editData.service_type_content));
             setServiceTypeUrl(editData.service_type_url);
-            
-                getDataPastorById(editData.pastor_id)
-           
+            getDataPastorById(editData.pastor_id)
             setServiceTypeDescription(editData.service_type_description)
 
         }
@@ -95,6 +88,7 @@ const ServiceTypeDialog: React.FC<ServiceTypeDialogProps> = ({
             const jsonDataString = JSON.parse(serviceTypeContent); // Pastikan valid JSON
             formData.append("service_type_content", JSON.stringify(jsonDataString));
         } catch (error) {
+            console.error(error)
             alert("Invalid JSON format for social media links");
             return;
         }

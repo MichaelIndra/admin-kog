@@ -41,14 +41,14 @@ const EventDialog: React.FC<EventDialogProps> = ({
     return adjustedDate.toISOString().split("T")[0];
   };
 
-  const formatDateForDisplay = (dateString: string) => {
-    const date = new Date(dateString);
-    return date.toLocaleDateString("id-ID", {
-      day: "2-digit",
-      month: "2-digit",
-      year: "numeric",
-    }); // Output: dd/mm/yyyy
-  };
+  // const formatDateForDisplay = (dateString: string) => {
+  //   const date = new Date(dateString);
+  //   return date.toLocaleDateString("id-ID", {
+  //     day: "2-digit",
+  //     month: "2-digit",
+  //     year: "numeric",
+  //   }); // Output: dd/mm/yyyy
+  // };
 
   useEffect(() => {
     // Membaca cookies
@@ -95,6 +95,7 @@ const EventDialog: React.FC<EventDialogProps> = ({
       const socialMediaLinks = JSON.parse(eventSocialMediaLinks); // Pastikan valid JSON
       formData.append("event_social_media_links", JSON.stringify(socialMediaLinks));
     } catch (error) {
+      console.error(error)
       alert("Invalid JSON format for social media links");
       return;
     }

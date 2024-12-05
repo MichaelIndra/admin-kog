@@ -63,6 +63,7 @@
 .cardWrapper {
   display: flex;
   overflow-x: auto;
+  height: max-content;
   gap: 16px;
 }
 

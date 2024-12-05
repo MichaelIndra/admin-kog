@@ -14,6 +14,8 @@ import CardLoadedEvent from "@/components/widgets/card_event_loaded";
 import { ServiceTypeData } from "@/components/types/ServiceTypeProps";
 import CardLoadedServiceType from "@/components/widgets/card_service_type_loaded";
 import ServiceTypeDialog from "@/components/widgets/service_type_dialog";
+import { ServiceData } from "@/components/types/ServiceProps";
+import CardLoadedService from "@/components/widgets/card_service_loaded";
 
 const Homepage = () => {
   const [error, setError] = useState<string | null>(null);
@@ -24,10 +26,12 @@ const Homepage = () => {
   const [pastorData, setPastorData] = useState<PastorData[]>([]);
   const [eventData, setEventData] = useState<EventData[]>([]);
   const [serviceTypeData, setServiceTypeData] = useState<ServiceTypeData[]>([]);
+  const [serviceData, setServiceData] = useState<ServiceData[]>([]);
 
   const [editDataPastor, setEditDataPastor] = useState<PastorData | null>(null);
   const [editDataEvent, setEditDataEvent] = useState<EventData | null>(null);
   const [editDataServiceType, setEditDataServiceType] = useState<ServiceTypeData | null>(null);
+  const [editDataService, setEditDataService] = useState<ServiceData | null>(null);
 
   const fetchPastorData = async () => {
     if (!token) {
@@ -108,15 +112,50 @@ const Homepage = () => {
         console.error(`Error fetching events: ${response.status}`);
         const errorMessage = await response.text(); // Ambil pesan error dari server (jika ada)
         setError(
-          `Failed to fetch events. Server responded with status: ${response.status}. ${errorMessage}`
+          `Failed to fetch service type. Server responded with status: ${response.status}. ${errorMessage}`
         );
         return;
       }
 
       // Proses data jika respons sukses
       const data = await response.json();
-      console.log("Event data fetched:", data);
+      console.log("service type data fetched:", data);
       setServiceTypeData(data);
+    } catch (error) {
+      console.error("An error occurred while fetching event data:", error);
+      setError("An unexpected error occurred. Please try again later.");
+    }
+  };
+
+  const fetchServiceData = async () => {
+    console.log('get service data')
+    if (!token) {
+      console.error("Token is missing. Cannot fetch data.");
+      setError("Authentication token is missing. Please log in again.");
+      return;
+    }
+    try {
+      const response = await fetch(`${config.API_BASE_URL}/api/admin/services`, {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`, // Sertakan token dalam header
+        },
+      });
+
+      // Periksa status HTTP
+      if (!response.ok) {
+        console.error(`Error fetching events: ${response.status}`);
+        const errorMessage = await response.text(); // Ambil pesan error dari server (jika ada)
+        setError(
+          `Failed to fetch events. Server responded with status: ${response.status}. ${errorMessage}`
+        );
+        return;
+      }
+      console.log("service data resp", response)
+      // Proses data jika respons sukses
+      const data = await response.json();
+      console.log("service data fetched:", data);
+      setServiceData(data);
     } catch (error) {
       console.error("An error occurred while fetching event data:", error);
       setError("An unexpected error occurred. Please try again later.");
@@ -154,12 +193,19 @@ const Homepage = () => {
       setCurrentType("serviceType");
       setEditDataServiceType(dataToEdit ?? null)
       setIsDialogOpen(true);
+    } else if (type === "services") {
+      const dataToEdit = serviceData.find((event) => event.id === id)
+      console.log(dataToEdit)
+      setCurrentType("services");
+      setEditDataService(dataToEdit ?? null)
+      setIsDialogOpen(true);
     }
 
     // Add edit functionality here
   };
 
   const getDialogContent = () => {
+    console.log(currentType)
     switch (currentType) {
       case "hero":
         return <HeroDialog onClose={handleCloseDialog} onSuccessAdd={fetchAll} />;
@@ -180,7 +226,12 @@ const Homepage = () => {
             pastors={pastorData}
           />;  
       case "services":
-        return <ServiceDialog onClose={handleCloseDialog} onSuccessAdd={fetchAll} />;
+        console.log('homepage get service type data',serviceTypeData)
+        return <ServiceDialog onClose={handleCloseDialog} onSuccessAdd={fetchAll} 
+            mode={editDataService ? "edit" : "add"}
+            editData={editDataService || undefined}
+            serviceTypes={serviceTypeData}
+        />;
       default:
         return <p>No content available for this type.</p>;
     }
@@ -217,6 +268,7 @@ const Homepage = () => {
       fetchPastorData()
       fetchEventData()
       fetchServiceTypeData()
+      fetchServiceData()
     }
   }, [token])
 
@@ -224,6 +276,7 @@ const Homepage = () => {
     fetchPastorData()
     fetchEventData()
     fetchServiceTypeData()
+    fetchServiceData()
   }
   return (
     <div className={styles.homepage}>
@@ -313,7 +366,7 @@ const Homepage = () => {
       {/* Service Type awal */}
       {serviceTypeData.length === 0 ? (
         <div className={styles.cardContainer}>
-          <Card key={3} leftText="Service Type" type="serviceType" onSuccessAdd={fetchAll} />
+          <Card key={3} leftText="Service Type" type="serviceType" onSuccessAdd={fetchAll} pastors={pastorData} />
         </div>
       ) : (
         <div className={styles.loadedCardContainer}>
@@ -349,9 +402,41 @@ const Homepage = () => {
 
 
       {/* Service awal */}
-      <div className={styles.cardContainer}>
-        <Card key={4} leftText="Our Service" type="services" onSuccessAdd={fetchAll} />
-      </div>
+      {serviceData.length === 0 ? (
+        <div className={styles.cardContainer}>
+          <Card key={4} leftText="Our Services" type="services" onSuccessAdd={fetchAll} serviceTypes={serviceTypeData} />
+        </div>
+      ) : (
+        <div className={styles.loadedCardContainer}>
+          <div className={styles.header}>
+            <h2 className={styles.title}>Our Services</h2>
+            <span
+              className={styles.addText}
+              onClick={() => handleOpenDialog("services")}
+            >
+              + Add Data
+            </span>
+          </div>
+          <div className={styles.cardWrapper}>
+            {serviceData.map((event) => (
+              <CardLoadedService
+                key={event.id}
+                id={event.id}
+                service_title={event.service_title}
+                service_description={event.service_description}
+                service_url={event.service_url}
+                service_type_id={event.service_type_id}
+                service_start_date={event.service_start_date}
+                service_end_date={event.service_end_date}
+                serviceTypes={serviceTypeData}
+                service_image={event.service_image}
+                onDeleteSuccess={fetchServiceData}
+                onEdit={() => handleEdit(event.id, "services")}
+              />
+            ))}
+          </div>
+        </div>
+      )}
       {/* Service akhir */}
 
       {/* {cards.map((card, index) => (

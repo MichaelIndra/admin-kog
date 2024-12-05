@@ -15,7 +15,11 @@ const Sidebar = () => {
   ]
 
   function logoutHandle(){
-
+    const confirmLogout = window.confirm("Apakah Anda yakin ingin logout?");
+    if (confirmLogout) {
+      document.cookie = "token=; path=/; expires=Thu, 01 Jan 1970 00:00:00 UTC;";
+      router.push('/auth/login');
+    }
   }
 
   return (

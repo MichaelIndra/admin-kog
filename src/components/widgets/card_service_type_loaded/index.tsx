@@ -119,8 +119,8 @@ const CardLoadedServiceType: React.FC<CardLoadedServiceTypeProps> = ({
                         ))}
                     </ul>
                 </div>
-                <div className={styles.imageThumbnail}>
-                    <img src={service_type_thumbnail} alt={service_type} className={styles.imageThumnailDetail} />
+                <div className={styles.imageContainer}>
+                    <img src={service_type_thumbnail} alt={service_type} className={styles.image} />
                 </div>
             </div>
             <hr className={styles.divider} />

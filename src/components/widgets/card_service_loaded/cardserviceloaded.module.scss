@@ -10,6 +10,7 @@
     margin-right: 16px; /* Jarak antar card */
   }
   
+
   .imageContainer {
     width: 100%;
     height: 200px;
@@ -40,21 +41,6 @@
     padding-left: 10px;
     font-size: 16px;
     
-  }
-
-  .imageThumbnail {
-    width: 100%;
-    height: 10px;
-    overflow: hidden;
-    border-radius: 8px;
-    margin-bottom: 16px;
-  }
-  
-  .imageThumnailDetail {
-    width: 50%;
-    height: 50%;
-    object-fit: cover;
-    overflow: hidden;
   }
   
   .description {
