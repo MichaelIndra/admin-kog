@@ -8,6 +8,7 @@ import ServiceTypeDialog from '../service_type_dialog';
 import styles from './cardhomepage.module.scss'
 import React, { useState } from 'react';
 import { PastorData } from '@/components/types/PastorProps';
+import GiveDialog from '../give_dialog';
 
 
 interface CustomCardProps extends CardProps{
@@ -33,6 +34,8 @@ const Card: React.FC<CustomCardProps> = ({ leftText, type, onSuccessAdd ,service
         return <ServiceDialog onClose={closeDialog} onSuccessAdd={onSuccessAdd} mode='add' serviceTypes={serviceTypes} />;
       case 'serviceType' : 
         return <ServiceTypeDialog onClose={closeDialog} onSuccessAdd={onSuccessAdd} mode='add'  pastors={pastors}/>
+        case 'give':
+        return <GiveDialog onClose={closeDialog} onSuccessAdd={onSuccessAdd} mode='add' />;
       default:
         return <p>Tidak ada konten untuk tipe ini.</p>;
     }

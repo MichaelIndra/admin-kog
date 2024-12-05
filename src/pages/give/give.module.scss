@@ -1,0 +1,74 @@
+.mainContent {
+    padding: 20px;
+}
+
+.title {
+    font-size: 2rem;
+    text-align: left;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+.cardContainer {
+    display: flex;
+    flex-direction: column;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+    margin-bottom: 20px;
+}
+
+
+.error {
+    color: red;
+    font-size: 16px;
+    margin-bottom: 16px;
+}
+
+.loadedCardContainer {
+    margin-bottom: 20px;
+    padding: 16px;
+    border: 1px solid #ddd;
+    border-radius: 12px;
+    background-color: #f9f9f9;
+    position: relative;
+
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+}
+
+.title {
+    font-size: 20px;
+    font-weight: bold;
+    margin: 0;
+}
+
+.addText {
+    font-size: 1rem;
+    color: red;
+    cursor: pointer;
+}
+
+.cardWrapper {
+    display: flex;
+    overflow-x: auto;
+    height: max-content;
+    gap: 16px;
+}
+
+.cardWrapper::-webkit-scrollbar {
+    height: 8px;
+}
+
+.cardWrapper::-webkit-scrollbar-thumb {
+    background: #ccc;
+    border-radius: 4px;
+}
+
+.cardWrapper::-webkit-scrollbar-thumb:hover {
+    background: #aaa;
+}

@@ -25,10 +25,7 @@ const Sidebar = () => {
   return (
     <aside className={styles.sidebar}>
       {/* Logo */}
-      <div className={styles.logo}>
-        <img src="/images/logo/logo.png" alt="Logo" className={styles.logoImage} />
-        <h1 className={styles.logoText}>KOG JKI Immanuel</h1>
-      </div>
+      
       {/* Navigation */}
       <nav>
         <ul>

@@ -164,13 +164,12 @@ const Homepage = () => {
 
   const handleOpenDialog = (type: string) => {
     setCurrentType(type);
-    setEditDataPastor(null);
     setIsDialogOpen(true);
   };
 
   const handleCloseDialog = () => {
-    setIsDialogOpen(false); // Tutup dialog
-    setCurrentType(null); // Reset tipe data
+    setIsDialogOpen(false);
+    setCurrentType(null); 
   };
 
   const handleEdit = (id: number, type: string) => {
@@ -219,18 +218,18 @@ const Homepage = () => {
           mode={editDataEvent ? "edit" : "add"}
           editData={editDataEvent || undefined}
         />;
-        case "serviceType":
-          return <ServiceTypeDialog onClose={handleCloseDialog} onSuccessAdd={fetchAll}
-            mode={editDataServiceType ? "edit" : "add"}
-            editData={editDataServiceType || undefined}
-            pastors={pastorData}
-          />;  
+      case "serviceType":
+        return <ServiceTypeDialog onClose={handleCloseDialog} onSuccessAdd={fetchAll}
+          mode={editDataServiceType ? "edit" : "add"}
+          editData={editDataServiceType || undefined}
+          pastors={pastorData}
+        />;
       case "services":
-        console.log('homepage get service type data',serviceTypeData)
-        return <ServiceDialog onClose={handleCloseDialog} onSuccessAdd={fetchAll} 
-            mode={editDataService ? "edit" : "add"}
-            editData={editDataService || undefined}
-            serviceTypes={serviceTypeData}
+        console.log('homepage get service type data', serviceTypeData)
+        return <ServiceDialog onClose={handleCloseDialog} onSuccessAdd={fetchAll}
+          mode={editDataService ? "edit" : "add"}
+          editData={editDataService || undefined}
+          serviceTypes={serviceTypeData}
         />;
       default:
         return <p>No content available for this type.</p>;
@@ -265,10 +264,7 @@ const Homepage = () => {
 
   useEffect(() => {
     if (token) {
-      fetchPastorData()
-      fetchEventData()
-      fetchServiceTypeData()
-      fetchServiceData()
+      fetchAll()
     }
   }, [token])
 
@@ -279,7 +275,7 @@ const Homepage = () => {
     fetchServiceData()
   }
   return (
-    <div className={styles.homepage}>
+    <div className={styles.mainContent}>
       <h1 className={styles.title}>Homepage</h1>
 
       {error && <p className={styles.error}>{error}</p>}
