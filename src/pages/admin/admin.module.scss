@@ -1,0 +1,28 @@
+.mainContent {
+    padding: 20px;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between; /* Rata kiri dan kanan */
+    align-items: center; /* Vertikal tengah */
+    margin-bottom: 20px; /* Jarak antara header dan tabel */
+  }
+
+.title {
+    font-size: 1rem;
+    font-weight: bold;
+    text-align: left;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+.addButton {
+    background-color: red; /* Warna background tombol */
+    color: white; /* Warna teks tombol */
+    border: none;
+    padding: 10px 20px;
+    border-radius: 4px;
+    font-size: 1rem;
+    cursor: pointer;
+  }

@@ -1,0 +1,62 @@
+.dataGridContainer {
+    height: 100%;
+    /* Pastikan DataGrid menggunakan tinggi penuh */
+    width: 100%;
+    /* Lebar penuh */
+    background-color: #ffffff;
+    /* Warna latar belakang tabel */
+    border-radius: 8px;
+    /* Sudut tabel melengkung */
+    padding: 16px;
+    /* Padding di sekitar tabel */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    /* Bayangan untuk tabel */
+}
+
+.dataGrid {
+    .MuiDataGrid-columnHeaders {
+        background-color: #1976d2 !important;
+        /* Background header */
+        color: #ffffff !important;
+        /* Text header */
+        border-bottom: none !important;
+        /* Remove bottom border */
+    }
+
+    .MuiDataGrid-columnSeparator {
+        display: none !important;
+        /* Remove separator */
+    }
+
+    .MuiDataGrid-root {
+        height: auto !important;
+        /* Auto height for table */
+    }
+}
+
+
+//   .dataGrid {
+//     & .MuiDataGrid-cell {
+//       font-size: 14px; /* Ukuran font untuk sel */
+//       color: #333; /* Warna teks default */
+//     }
+
+//     & .MuiDataGrid-columnHeaders {
+//       background-color: red; /* Warna header */
+//       font-weight: bold;
+//       color: white;
+//       font-size: 16px; /* Ukuran font header */
+//       border-bottom: none
+//     }
+//     & .MuiDataGrid-columnSeparator {
+//         display: none !important; /* Remove separator */
+//       }
+
+//     & .MuiDataGrid-row:hover {
+//       background-color: #f9f9f9; /* Warna baris saat hover */
+//     }
+
+//     & .MuiDataGrid-footerContainer {
+//       background-color: #f4f4f4; /* Warna latar bawah */
+//     }
+//   }
